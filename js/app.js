@@ -12,6 +12,15 @@ $(function(){
         $('.collapse .card-body').html('');
     }
 
+    function humainDate(date){
+
+        year = date.substr(0,4);
+        month = date.substr(4,2);
+        day = date.substr(6,2);
+
+        return year+'/'+month+'/'+day;
+    }
+
     // hide result information box until the form submited
     $('#result').hide();
     
@@ -19,6 +28,7 @@ $(function(){
     $('form').submit(function(e){
 
         e.preventDefault();
+
         $('#submit').html('Searching...');
         $('#submit').prop('disabled',true);
 
@@ -36,8 +46,8 @@ $(function(){
                             <td>'+data[0].Wallet.financialstatus+'</td>\
                             <td>'+data[0].Wallet.fastcheckout+'</td>\
                             <td>'+data[0].Wallet.status+'</td>\
-                            <td>'+data[0].Wallet.created+'</td>\
-                            <td>'+data[0].Wallet.modified+'</td>\
+                            <td>'+humainDate(data[0].Wallet.created)+'</td>\
+                            <td>'+humainDate(data[0].Wallet.modified)+'</td>\
                             </tr>';
                 wallet.html(row);
 
@@ -97,6 +107,10 @@ $(function(){
                 console.log(response);
                 $('#submit').html('Get Info');
                 $('#submit').prop('disabled',false);
+            },
+            complete: function(data) {
+                $('#submit').html('Get Info');
+                $('#submit').prop('disabled',false); 
             }
         });
     });
