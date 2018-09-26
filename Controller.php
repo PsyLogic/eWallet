@@ -11,45 +11,87 @@ class Controller{
         
     }
 
+    /**
+     * Get Parsed  XML
+     *
+     * @param String $url
+     * @param String $transaction_id
+     * @return void
+     */
     public function getXML($url,$transaction_id){
         $this->info =  $this->cURL($url,$this->data($transaction_id));
         $this->info = $this->parseXML($this->info)[0];
         return $this;
     }
 
+    /**
+     * Get Wallet Property
+     *
+     * @return Object
+     */
     public function getWallet(){
-        array_push($this->getData, ['wallet' => $this->info->ewallet]);
+        array_push($this->getData, ['Wallet' => $this->info->ewallet]);
         return $this;
     }
 
+    /**
+     * Get Transaction property
+     *
+     * @return Object
+     */
     public function getTransaction(){
         $transaction =  $this->info->transaction;
         unset($transaction->items);
-        array_push($this->getData,['transaction' =>$transaction]);
+        array_push($this->getData,['Transaction' =>$transaction]);
 
         return $this;
     }
 
+    /**
+     * Get Payment Property
+     *
+     * @return Object
+     */
     public function getPayment(){
         array_push($this->getData,['Payment' =>$this->info->paymentdetails]);
         return $this;
     }
 
+    /**
+     * Get Customer Property
+     *
+     * @return Object
+     */
     public function getCustomer(){
         array_push($this->getData,['Customer' => $this->info->customer]);
         return $this;
     }
 
+    /**
+     * Get Shppoing Cart Items
+     *
+     * @return Object
+     */
     public function getShoppingCart(){
         array_push($this->getData,['ShoppingCart' => $this->info->checkoutdata->children()[0]->items]);
         return $this;
     }
 
+    /**
+     * Get Fetched Data
+     *
+     * @return Collection
+     */
     public function get(){
         return json_encode($this->getData);
     }
 
     
+    /**
+     * Get all Properties
+     *
+     * @return Collection
+     */
     public function all(){
         $this->getWallet();
         $this->getTransaction();
@@ -60,7 +102,12 @@ class Controller{
         return $this->get();
     }
     
-    
+    /**
+     * Default Data
+     *
+     * @param String $transaction_id
+     * @return String
+     */
     private function data($transaction_id){
         return '<?xml version="1.0" encoding="UTF-8"?>  
         <status ua="custom-1.1">  
@@ -76,10 +123,23 @@ class Controller{
         ';
     }
 
+    /**
+     * Parse XML Content
+     *
+     * @param String $xml
+     * @return SimpleXMLElement
+     */
     private function parseXML($xml){
         return simplexml_load_string($xml);
     }
 
+    /**
+     * Send Request to Server
+     *
+     * @param String $url
+     * @param String $body
+     * @return String
+     */
     private function cURL($url,$body){
 
         $ch = curl_init();

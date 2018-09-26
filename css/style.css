@@ -5,8 +5,8 @@ body {
 
 body {
   display: -ms-flexbox;
-  display: -webkit-box;
-  display: flex;
+  /* display: -webkit-box;
+  display: flex; */
   -ms-flex-align: center;
   -ms-flex-pack: center;
   -webkit-box-align: center;
@@ -46,4 +46,9 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.btn-link{
+  color: #fff!important;
+  font-weight: bold;
 }
